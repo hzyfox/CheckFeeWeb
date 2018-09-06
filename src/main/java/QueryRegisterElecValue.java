@@ -1,5 +1,6 @@
-
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,8 @@ import java.util.Enumeration;
  * USER: husterfox
  */
 public class QueryRegisterElecValue extends HttpServlet {
+    private static Logger log = LoggerFactory.getLogger(QueryRegisterElecValue.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Enumeration<String> parameterList = req.getParameterNames();
@@ -33,12 +36,12 @@ public class QueryRegisterElecValue extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setHeader("content-type", "text/json");
-        String location = URLDecoder.decode(req.getParameter("location"),"UTF-8");
+        String location = URLDecoder.decode(req.getParameter("location"), "UTF-8");
         String building = req.getParameter("building");
         String roomnum = req.getParameter("roomnum");
         String warning = req.getParameter("warning");
         String email = req.getParameter("email");
-        System.out.println();
+        log.debug("get post request location {} building {} roomnum {} warning {} email {}", location, building, roomnum, warning, email);
         String elecValue = GetElecFee.getElecFee(location, building, roomnum);
         boolean resultValue = false;
         if (email != null && warning != null) {
